@@ -1,16 +1,24 @@
-import { Button, ThemeProvider } from "@mui/material";
+import { ThemeProvider } from "@mui/material";
+import { ToastContainer } from "react-toastify";
+import { HashRouter } from "react-router-dom";
+
+import { theme } from "./config/Theme";
+import RouteInfo from "./routes/RouteInfo";
+
+import "react-toastify/dist/ReactToastify.css";
 import classes from "./App.module.scss";
-import { theme } from "./Theme";
+
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <Button color="secondary" variant="contained">
-        dsds
-      </Button>
-
-      <div className={classes.app}>
-        <div className={classes.hello}>hwkko</div>
-      </div>
+      <HashRouter>
+        <RouteInfo />
+        <ToastContainer
+          position="bottom-center"
+          autoClose={3000}
+          theme="colored"
+        />
+      </HashRouter>
     </ThemeProvider>
   );
 }
