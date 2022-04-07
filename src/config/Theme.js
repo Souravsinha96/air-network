@@ -1,13 +1,6 @@
 import { createTheme } from "@mui/material";
 
 export const theme = createTheme({
-  breakpoints: {
-    values: {
-      md: 1000,
-      lg: 1200,
-      xl: 1920,
-    },
-  },
   typography: {
     fontFamily: "'Poppins', sans-serif",
   },
