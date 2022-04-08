@@ -9,7 +9,7 @@ import {
 import { useTheme } from "@mui/material/styles";
 import CloseIcon from "@mui/icons-material/Close";
 
-export const Modal = ({ open, children, title, onClose }) => {
+export const Popup = ({ open, children, title, onClose }) => {
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down("md"));
   const container = useRef(null);

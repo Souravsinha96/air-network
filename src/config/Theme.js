@@ -18,7 +18,6 @@ export const theme = createTheme({
         root: {
           // Some CSS
           textTransform: "capitalize",
-          color: "#fff",
         },
       },
     },
