@@ -3,21 +3,23 @@
   width: 100vw;
   background: url("../../assets/images/apirplane_bg.jpg") no-repeat;
   background-size: cover;
+}
 
-  .container {
-    width: 30em;
-    background-color: var(--clr-white);
-    padding: 1em;
-    border-radius: 0.5em;
-    .header {
-      flex-direction: column;
-      img {
-        width: 15em;
-      }
+.container {
+  background-color: var(--clr-white);
+  padding: 3em;
+  border-radius: 1em;
+
+  .header {
+    flex-direction: column;
+    img {
+      width: 15em;
     }
   }
 }
-
+.bodyContainer {
+  --flow-space: 2rem;
+}
 @media (max-width: 800px) {
   .bg {
     background: url("../../assets/images/airplane_bg_mobile.jpg") no-repeat;
