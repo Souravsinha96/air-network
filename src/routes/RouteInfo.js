@@ -1,16 +1,15 @@
 import { Fragment } from "react";
 import { Route, Routes } from "react-router-dom";
-import { Airports } from "../components/airports/Airports";
-import { FlightStatus } from "../components/flightStatus/FlightStatus";
-import { LoginPage } from "../pages/page-index";
+
+import { LoginPage, FlightStatusPage, AirportsPage } from "../pages/page-index";
 
 const RouteInfo = () => {
   return (
     <Fragment>
       <Routes>
         <Route path="/" element={<LoginPage />} />
-        <Route path="/status" element={<FlightStatus />} />
-        <Route path="/airports" element={<Airports />} />
+        <Route path="/status" element={<FlightStatusPage />} />
+        <Route path="/airports" element={<AirportsPage />} />
       </Routes>
     </Fragment>
   );

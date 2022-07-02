@@ -9,6 +9,7 @@ import RouteInfo from "./routes/RouteInfo";
 
 import "react-toastify/dist/ReactToastify.css";
 import Loader from "./components/ui/Loader";
+import AppBar from "./components/appBar/AppBar";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       <ThemeProvider theme={theme}>
         <Loader />
         <HashRouter>
+          <AppBar />
           <RouteInfo />
           <ToastContainer
             position="bottom-center"
