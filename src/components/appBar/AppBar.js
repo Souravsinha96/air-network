@@ -1,20 +1,28 @@
+import { Fragment, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import {
   Avatar,
-  Button,
   Drawer,
   IconButton,
   Menu,
   MenuItem,
   Tooltip,
 } from "@mui/material";
-import { Fragment } from "react";
-import { useState } from "react";
-import logo from "../../assets/images/logo.png";
+import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import MenuIcon from "@mui/icons-material/Menu";
+
+import { SETTINGS_OPTIONS } from "../../constants/settings-constant";
+import MainMenu from "../menu/Menu";
+import logo from "../../assets/images/logo.png";
+import { ROUTE_OPTIONS } from "../../constants/route-constants";
+import { logout } from "../../redux/slices/userSlice";
+
 import classes from "./AppBar.module.scss";
-import { settings } from "../../constants/settings-constant";
 
 const AppBar = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [menu, setmenu] = useState(false);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const toggleDrawer = () => {
@@ -26,6 +34,13 @@ const AppBar = () => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+  const handleUserInfo = () => {
+    navigate(ROUTE_OPTIONS.userInfo);
+  };
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate(ROUTE_OPTIONS.login);
+  };
 
   return (
     <div className={`${classes.container} flex-center`}>
@@ -33,18 +48,20 @@ const AppBar = () => {
         <img src={logo} alt="logo" />
         <div>
           <Fragment key="menu">
-            <IconButton onClick={toggleDrawer}>
-              <MenuIcon htmlColor="#5048E5" />
+            <IconButton color="secondary" onClick={toggleDrawer}>
+              <MenuIcon />
             </IconButton>
             <Drawer anchor="left" open={menu} onClose={toggleDrawer}>
-              sdsdsds
+              <MainMenu />
             </Drawer>
           </Fragment>
         </div>
       </div>
       <Tooltip title="Open settings">
         <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-          <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+          <Avatar alt="SS" sx={{ bgcolor: "secondary.main" }}>
+            <AccountCircleOutlinedIcon />
+          </Avatar>
         </IconButton>
       </Tooltip>
       <Menu
@@ -55,7 +72,6 @@ const AppBar = () => {
           vertical: "top",
           horizontal: "right",
         }}
-        keepMounted
         transformOrigin={{
           vertical: "top",
           horizontal: "right",
@@ -64,13 +80,29 @@ const AppBar = () => {
         onClose={handleCloseUserMenu}
         disablePortal
       >
-        {settings.map((item) => (
-          <MenuItem onClick={handleCloseUserMenu}>
-            <div className={classes.menu_item}>
-              {item.icon} {item.name}
-            </div>
-          </MenuItem>
-        ))}
+        <MenuItem
+          key={SETTINGS_OPTIONS.home.name}
+          onClick={() => navigate(ROUTE_OPTIONS.status)}
+          sx={{ gap: "1em" }}
+        >
+          {SETTINGS_OPTIONS.home.icon} {SETTINGS_OPTIONS.home.name}
+        </MenuItem>
+
+        <MenuItem
+          key={SETTINGS_OPTIONS.profile.name}
+          onClick={handleUserInfo}
+          sx={{ gap: "1em" }}
+        >
+          {SETTINGS_OPTIONS.profile.icon} {SETTINGS_OPTIONS.profile.name}
+        </MenuItem>
+
+        <MenuItem
+          key={SETTINGS_OPTIONS.logout.name}
+          onClick={handleLogout}
+          sx={{ gap: "1em" }}
+        >
+          {SETTINGS_OPTIONS.logout.icon} {SETTINGS_OPTIONS.logout.name}
+        </MenuItem>
       </Menu>
     </div>
   );

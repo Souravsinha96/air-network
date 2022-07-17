@@ -5,7 +5,6 @@ const AirportsPage = () => {
   return (
     <BaseLayout>
       <AppBar />
-
       <Airports />
     </BaseLayout>
   );

@@ -1,15 +1,16 @@
 :root {
   /* colors */
-  --clr-primary: "#5048E5";
-  --clr-secondary: "#10B981";
-  --clr-white: #fff;
-  --clr-dark: #222;
+
+  --clr-primary: #5048e5;
+  --clr-secondary: #10b981;
+  --clr-white: #ffffff;
+  --clr-dark: #222222;
   --clr-light: #777777;
   --fs-body: clamp(0.75rem, 0.5357rem + 0.4464vw, 1.25rem);
-  --fs-heading: clamp(0.875rem, 0.6071rem + 0.558vw, 1.5rem);
+  --fs-heading: clamp(1rem, 0.5714rem + 0.8929vw, 2rem);
   --fs-subheading: clamp(0.8125rem, 0.6518rem + 0.3348vw, 1.1875rem);
   --fs-title: 1rem;
-  --fs-subtitle: 0.8rem;
+  --fs-caption: 0.8rem;
 }
 /* min:12px max:20px */
 /* min:14px max:22px */
@@ -72,14 +73,20 @@ select {
 body {
   font-family: "Poppins", sans-serif;
   font-size: var(--fs-body);
-  color: (var(--clr-dark));
-  background-color: (var(--clr-white));
+  font-weight: 500;
+  color: var(--clr-dark);
+  background-color: var(--clr-white);
   overflow-x: hidden;
 }
 
 /* general */
 .flex {
   display: flex;
+  gap: var(--gap, 1rem);
+}
+.flex-col {
+  display: flex;
+  flex-direction: column;
   gap: var(--gap, 1rem);
 }
 .grid {
@@ -123,15 +130,15 @@ body {
 .fs-title {
   font-size: var(--fs-title);
 }
-.fs-subtitle {
-  font-size: var(--fs-subtitle);
+.fs-caption {
+  font-size: var(--fs-caption);
 }
 
 /* ===== Scrollbar CSS ===== */
 /* Firefox */
 * {
   scrollbar-width: auto;
-  scrollbar-color: #5048e5 #ffffff;
+  scrollbar-color: var(--clr-primary) var(--clr-white);
 }
 
 /* Chrome, Edge, and Safari */
@@ -140,11 +147,11 @@ body {
 }
 
 *::-webkit-scrollbar-track {
-  background: #ffffff;
+  background: var(--clr-white);
 }
 
 *::-webkit-scrollbar-thumb {
-  background-color: #5048e5;
+  background-color: var(--clr-primary);
   border-radius: 10px;
-  border: 3px solid #ffffff;
+  border: 3px solid var(--clr-white);
 }

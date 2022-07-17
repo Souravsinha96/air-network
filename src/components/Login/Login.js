@@ -1,15 +1,25 @@
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button, TextField, Zoom } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { useAxios } from "../../hooks/useAxios";
+import { useDispatch } from "react-redux";
 
+import { ROUTE_OPTIONS } from "../../constants/route-constants";
+import { login } from "../../redux/slices/userSlice";
 import amadeus_logo from "../../assets/images/amadeus_logo.png";
 import logo from "../../assets/images/logo.png";
+import { loginApi } from "../../api/apiEndpoints";
+import LoginButton from "../ui/Buttons/LoginButton";
+
 import classes from "./Login.module.scss";
-import { useNavigate } from "react-router-dom";
-import { useEffect, useRef } from "react";
 
 const Login = () => {
+  const { response, error, fetchData } = useAxios();
+  const [appData, setAppData] = useState({});
   const userRef = useRef(null);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const {
     register,
     formState: { errors },
@@ -17,11 +27,23 @@ const Login = () => {
   } = useForm();
 
   const onSubmit = (data) => {
-    navigate("/status");
+    fetchData({
+      url: loginApi,
+      method: "POST",
+      data: `grant_type=client_credentials&client_id=${process.env.REACT_APP_AMADEUS_API_KEY}&client_secret=${process.env.REACT_APP_AMADEUS_API_SECRET}`,
+    });
+    setAppData(data);
   };
+
   useEffect(() => {
     userRef.current.focus();
-  }, []);
+    if (response?.data != null && response?.data.username === appData?.email) {
+      navigate(ROUTE_OPTIONS.status);
+      dispatch(login(response.data));
+    } else {
+      return;
+    }
+  }, [response, appData, dispatch, navigate]);
 
   return (
     <div className={`${classes.bg} flex-center `}>
@@ -38,31 +60,24 @@ const Login = () => {
             <div className={classes.row}>
               <TextField
                 inputRef={userRef}
-                {...register("username")}
+                {...register("email")}
                 focused
                 fullWidth
                 size="small"
-                placeholder="Username"
+                placeholder="Email"
               />
             </div>
             <div className={classes.row}>
               <TextField
-                {...register("password")}
+                {...register("applicationName")}
                 focused
                 fullWidth
                 size="small"
-                placeholder="Password"
+                placeholder="Application Name"
               />
             </div>
             <div className={classes.row}>
-              <Button
-                type="submit"
-                variant="contained"
-                color="primary"
-                fullWidth
-              >
-                Login
-              </Button>
+              <LoginButton text="Login" />
             </div>
           </form>
           <div className="flex-col-center">

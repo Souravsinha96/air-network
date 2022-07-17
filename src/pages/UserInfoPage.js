@@ -1,13 +1,12 @@
 import AppBar from "../components/appBar/AppBar";
-import { FlightStatus } from "../components/flightStatus/FlightStatus";
 import BaseLayout from "../layouts/BaseLayout";
-
-const FlightStatusPage = () => {
+import UserInfo from "../components/userInfo/UserInfo";
+const UserInfoPage = () => {
   return (
     <BaseLayout>
       <AppBar />
-      <FlightStatus />
+      <UserInfo />
     </BaseLayout>
   );
 };
-export default FlightStatusPage;
+export default UserInfoPage;

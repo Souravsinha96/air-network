@@ -1,2 +1,39 @@
+@import "../../index.css";
 .container {
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+  height: 100%;
+  padding: 2em 1em;
+  justify-content: space-between;
+  .m_container,
+  .activeContainer {
+    text-decoration: none;
+    padding: 0.8em 1em;
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  .m_container {
+    transition: all 0.2s ease;
+    color: var(--clr-light);
+  }
+  .m_container:hover {
+    background-color: #827dd8;
+    color: var(--clr-white);
+  }
+
+  .activeContainer {
+    background-color: var(--clr-primary);
+    color: var(--clr-white);
+  }
+  .listItem {
+    display: flex;
+    justify-content: space-between;
+    gap: 2em;
+    align-items: center;
+  }
+  .listItem > div {
+    align-items: center;
+  }
 }
