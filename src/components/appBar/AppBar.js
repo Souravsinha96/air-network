@@ -1,4 +1,5 @@
 import { Fragment, useState } from "react";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import {
@@ -9,14 +10,13 @@ import {
   MenuItem,
   Tooltip,
 } from "@mui/material";
+
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import MenuIcon from "@mui/icons-material/Menu";
-
 import { SETTINGS_OPTIONS } from "../../constants/settings-constant";
 import MainMenu from "../menu/Menu";
 import logo from "../../assets/images/logo.png";
 import { ROUTE_OPTIONS } from "../../constants/route-constants";
-import { logout } from "../../redux/slices/userSlice";
 
 import classes from "./AppBar.module.scss";
 
@@ -38,7 +38,8 @@ const AppBar = () => {
     navigate(ROUTE_OPTIONS.userInfo);
   };
   const handleLogout = () => {
-    dispatch(logout());
+    dispatch({ type: "logout" });
+    delete axios.defaults.headers.common["Authorization"];
     navigate(ROUTE_OPTIONS.login);
   };
 

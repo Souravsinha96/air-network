@@ -9,14 +9,15 @@ import { ROUTE_OPTIONS } from "../../constants/route-constants";
 import { login } from "../../redux/slices/userSlice";
 import amadeus_logo from "../../assets/images/amadeus_logo.png";
 import logo from "../../assets/images/logo.png";
-import { loginApi } from "../../api/apiEndpoints";
+import { base_urlv1, loginApi } from "../../api/apiEndpoints";
 import LoginButton from "../ui/Buttons/LoginButton";
 
 import classes from "./Login.module.scss";
+import { axiosConfig } from "../../config/axiosConfig";
+import axios from "axios";
 
 const Login = () => {
-  const { response, error, fetchData } = useAxios();
-  const [appData, setAppData] = useState({});
+  const { fetchData } = useAxios();
   const userRef = useRef(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -27,23 +28,28 @@ const Login = () => {
   } = useForm();
 
   const onSubmit = (data) => {
-    fetchData({
-      url: loginApi,
-      method: "POST",
-      data: `grant_type=client_credentials&client_id=${process.env.REACT_APP_AMADEUS_API_KEY}&client_secret=${process.env.REACT_APP_AMADEUS_API_SECRET}`,
-    });
-    setAppData(data);
+    axios
+      .request({
+        url: loginApi,
+        method: "POST",
+        data: `grant_type=client_credentials&client_id=${process.env.REACT_APP_AMADEUS_API_KEY}&client_secret=${process.env.REACT_APP_AMADEUS_API_SECRET}`,
+      })
+      .then((res) => {
+        if (
+          res?.data != null &&
+          res?.statusText === "OK" &&
+          res?.data.username === data?.email
+        ) {
+          dispatch(login(res.data));
+          axios.defaults.headers.common[
+            "Authorization"
+          ] = `Bearer ${res.data["access_token"]}`;
+          navigate(ROUTE_OPTIONS.status);
+        } else {
+          return;
+        }
+      });
   };
-
-  useEffect(() => {
-    userRef.current.focus();
-    if (response?.data != null && response?.data.username === appData?.email) {
-      navigate(ROUTE_OPTIONS.status);
-      dispatch(login(response.data));
-    } else {
-      return;
-    }
-  }, [response, appData, dispatch, navigate]);
 
   return (
     <div className={`${classes.bg} flex-center `}>

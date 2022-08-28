@@ -1,35 +1,68 @@
-import {
-  Button,
-  Card,
-  CardActions,
-  CardHeader,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-} from "@mui/material";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import { Button, Card, CardActions } from "@mui/material";
+
 import { useAxios } from "../../hooks/useAxios";
-import { useEffect } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { airlinesApi, fligtStatusApi } from "../../api/apiEndpoints";
+import { setAirlinesInfo } from "../../redux/slices/airlinesInfoSlice";
 
 import classes from "./FlightStatus.module.scss";
+import CustomTextField from "../ui/CustomTextField";
+import CustomAutocomplete from "../ui/CustomAutocomplete";
 
 export const FlightStatus = () => {
-  const { handleSubmit, reset, control } = useForm();
-  const { response, error, loading, fetchData } = useAxios();
-
-  // useEffect(() => {
-  //   fetchData({url:"/reference-data/airlines",baseURL:base_urlv1})
-  // }, [])
+  const dispatch = useDispatch();
+  const airlinesCodes = useSelector((state) => state.airlines.data);
+  const {
+    handleSubmit,
+    formState: { errors },
+    reset,
+    control,
+  } = useForm();
+  const [flightStatus, setflightStatus] = useState([]);
+  const { fetchData } = useAxios();
 
   const registerHandler = (data) => {
     console.log(data);
+    fetchData({
+      url: fligtStatusApi,
+      method: "GET",
+      params: { ...data, carrierCode: data.id },
+    }).then((res) => {
+      if (res?.data != null && res?.statusText === "OK") {
+        setflightStatus(res?.data);
+      } else {
+        return;
+      }
+    });
     reset();
   };
   const handleReset = () => {
     reset();
   };
+  useEffect(() => {
+    // if (iataCodes === undefined)
+    fetchData({
+      url: airlinesApi,
+      method: "GET",
+    }).then((res) => {
+      if (res?.data != null && res?.statusText === "OK") {
+        dispatch(setAirlinesInfo(res?.data));
+      } else {
+        return;
+      }
+    });
+  }, []);
+  const iataCodes = airlinesCodes?.map((i) => {
+    return {
+      id: i.iataCode,
+      label:
+        i.commonName != undefined
+          ? `${i.iataCode} - ${i.commonName}`
+          : i.iataCode,
+    };
+  });
   return (
     <div>
       <h1 className="fs-heading">Flight Status</h1>
@@ -39,81 +72,38 @@ export const FlightStatus = () => {
           className={`${classes.form} flex`}
         >
           <div className={classes.form_fields}>
-            <Controller
-              render={({ field }) => (
-                <FormControl focused size="small" fullWidth>
-                  <InputLabel id="from-label">Airline Code</InputLabel>
-                  <Select
-                    labelId="Airline Code-label"
-                    id="Airline Code"
-                    {...field}
-                    label="Airline Code"
-                    size="small"
-                  >
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
-                  </Select>
-                </FormControl>
-              )}
-              name="from"
+            <CustomAutocomplete
+              name="carrierCode"
+              options={iataCodes}
+              label="Airline Code"
               control={control}
             />
           </div>
 
           <div className={classes.form_fields}>
-            <Controller
-              render={({ field }) => (
-                <FormControl focused size="small" fullWidth>
-                  <InputLabel shrink={true} id="from-label">
-                    Flight Number
-                  </InputLabel>
-                  <TextField
-                    {...field}
-                    label="Flight Number"
-                    focused
-                    color="primary"
-                    variant="outlined"
-                    size="small"
-                  />
-                </FormControl>
-              )}
+            <CustomTextField
               name="flightNumber"
+              label="Flight Number"
               control={control}
             />
           </div>
           <div className={classes.form_fields}>
-            <Controller
-              render={({ field }) => (
-                <FormControl size="small" fullWidth>
-                  <InputLabel shrink={true} id="from-label">
-                    Date
-                  </InputLabel>
-                  <TextField
-                    {...field}
-                    label="Date"
-                    focused
-                    color="primary"
-                    variant="outlined"
-                    size="small"
-                    type="date"
-                  />
-                </FormControl>
-              )}
-              name="scheduledDate"
+            <CustomTextField
+              name="scheduledDepartureDate"
+              label="Date"
               control={control}
             />
           </div>
 
-          <Button
-            className={classes.form_fields}
-            variant="contained"
-            color="secondary"
-            type="Submit"
-          >
+          <Button fullWidth variant="contained" color="secondary" type="Submit">
             Search Flight
           </Button>
-          <Button variant="outlined" color="error" onClick={handleReset}>
+          <Button
+            fullWidth
+            variant="outlined"
+            color="error"
+            onClick={handleReset}
+          >
             Reset
           </Button>
         </form>

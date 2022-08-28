@@ -1,11 +1,16 @@
 .main_container {
   max-width: 1600px;
   margin: 2rem auto;
+}
+.form {
+  width: 100%;
+  --gap: 2rem;
+}
+.form_fields {
+  width: 100%;
+}
+@media only screen and (max-width: 1200px) {
   .form {
-    width: 100%;
-    --gap: 2rem;
-    .form_fields {
-      width: 100%;
-    }
+    flex-direction: column;
   }
 }

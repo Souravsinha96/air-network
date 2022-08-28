@@ -7,6 +7,7 @@ import {
   FlightStatusPage,
   AirportsPage,
   UserInfoPage,
+  AirlinesPage,
 } from "../pages/page-index";
 
 const RouteInfo = () => {
@@ -16,7 +17,7 @@ const RouteInfo = () => {
         <Route path="/" element={<LoginPage />} />
         <Route path={ROUTE_OPTIONS.status} element={<FlightStatusPage />} />
         <Route path={ROUTE_OPTIONS.airports} element={<AirportsPage />} />
-        <Route path={ROUTE_OPTIONS.airlines} element={<AirportsPage />} />
+        <Route path={ROUTE_OPTIONS.airlines} element={<AirlinesPage />} />
         <Route path={ROUTE_OPTIONS.userInfo} element={<UserInfoPage />} />
       </Routes>
     </Fragment>

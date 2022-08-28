@@ -1,22 +1,23 @@
-import { FormControl, InputLabel, TextField } from "@mui/material";
+import { FormControl, TextField } from "@mui/material";
 import { Controller } from "react-hook-form";
 
-const CustomTextField = ({ label, name, control }) => {
+const CustomDateField = ({ label, name, control }) => {
   return (
     <Controller
       render={({ field }) => (
-        <FormControl focused size="small" fullWidth>
+        <FormControl size="small" fullWidth>
           <InputLabel shrink={true} id="from-label">
             {label}
           </InputLabel>
           <TextField
             {...field}
+            required
             label={label}
             focused
-            required
             color="primary"
             variant="outlined"
             size="small"
+            type="date"
           />
         </FormControl>
       )}
@@ -25,4 +26,4 @@ const CustomTextField = ({ label, name, control }) => {
     />
   );
 };
-export default CustomTextField;
+export default CustomDateField;

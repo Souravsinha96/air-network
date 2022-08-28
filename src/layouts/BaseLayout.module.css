@@ -11,4 +11,5 @@
 .content {
   grid-area: content;
   padding: 1em;
+  height: 100%;
 }

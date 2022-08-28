@@ -5,7 +5,7 @@ export const Airports = () => {
   return (
     <div>
       <HorizontalPanel />
-      dsdsd
+      Airports
     </div>
   );
 };
